@@ -1,13 +1,13 @@
 const express = require('express');
 const tagsRouter = express.Router();
 
+const { getAllTags, getPostsByTagName } = require('../db');
+
 tagsRouter.use((req, res, next) => {
   console.log("A request is being made to /tags");
 
   next();
 });
-
-const { getAllTags } = require('../db');
 
 tagsRouter.get('/', async (req, res) => {
     const tags = await getAllTags();
@@ -17,5 +17,15 @@ tagsRouter.get('/', async (req, res) => {
     });
   });
   
+  tagsRouter.get('/:tagName/posts', async(req, res, next)=>{
+
+    try{
+      const tagName = req.params.tagName
+      const posts = getPostsByTagName(tagName);
+      res.send({posts})
+    }catch ({name, message }){
+      next({name, message})
+    }
+  })
 
 module.exports = tagsRouter;

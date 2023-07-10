@@ -19,9 +19,9 @@ async function createInitialUsers(){
     try{
         console.log("Startng to create users...");
 
-        const albert = await createUser({username: 'albert', password: 'bertie99', name:'albert',location:'big house' });
-        const sandra = await createUser({username: 'sandra', password: ' 2sandy4me' , name:'sandra',location:'the streets'});
-        const glamgal = await createUser({username: 'glamgal', password: ' soglam' , name:'glamgal',location:'Mexico'});
+        await createUser({username: 'albert', password: 'bertie99', name:'albert',location:'big house' });
+        await createUser({username: 'sandra', password: ' 2sandy4me' , name:'sandra',location:'the streets'});
+        await createUser({username: 'glamgal', password: ' soglam' , name:'glamgal',location:'Mexico'});
         
         
         // console.log(albert);

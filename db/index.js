@@ -9,15 +9,6 @@ const client = new Client ({
     password: "messi3214"
 });
 
-async function getAllUsers() {
-    const { rows } = await client.query(
-      `SELECT id, username, name, location, active
-      FROM users;
-    `);
-  
-    return rows;
-  }
-
   async function createUser({ 
     username, 
     password,
@@ -60,6 +51,19 @@ async function getAllUsers() {
       throw error;
     }
   }
+
+  async function getAllUsers() {
+    try{
+    const { rows } = await client.query(
+      `SELECT id, username, name, location, active
+      FROM users;
+    `);
+  
+    return rows;
+  }catch(error) {
+    throw error;
+  }
+}
 
   async function createPost({
     authorId,
@@ -185,8 +189,6 @@ async function getAllUsers() {
       return; 
     }
   
-    
-
     const insertValues = tagList.map(
       (_, index) => `$${index + 1}`).join('), (');
 
@@ -244,6 +246,13 @@ async function getAllUsers() {
         FROM posts
         WHERE id=$1;
       `, [postId]);
+
+      if (!post) {
+        throw {
+          name: "PostNotFoundError",
+          message: "Could not find a post with that postId"
+        };
+      }
   
       const { rows: tags } = await client.query(`
         SELECT tags.*
@@ -325,5 +334,7 @@ module.exports = {
   addTagsToPost,
   getPostsByTagName,
   getAllTags,
-  getUserByUsername
+  getUserByUsername,
+  createPostTag,
+  getPostById
 }
